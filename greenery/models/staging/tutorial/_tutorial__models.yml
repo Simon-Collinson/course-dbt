@@ -7,4 +7,3 @@ models:
       - name: name
         tests:
           - not_null
-          - unique 
