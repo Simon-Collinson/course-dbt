@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+
+  - name: postgres_greenery
+    schema: public # this is the schema our raw data lives in
+    database: raw # this is the name of our database
+
+    tables:
+    - name: addresses
+      description: Addresses for our users
+    - name: events
+      description: Web events from our store
+    - name: orders
+      description: Order details from our store
+    - name: order_items
+      description: Item-level details for products within orders
+    - name: products
+      description: Information about our products
+    - name: promos
+      description: Promo codes used in our store
+    - name: users
+      description: Details about our users

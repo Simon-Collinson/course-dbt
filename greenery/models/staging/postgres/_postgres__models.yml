@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  - name: postgres_addresses
+    description: Addresses for our users 
+    columns:
+      - name: address_guid
+        tests:
+          - not_null
+      - name: address
+        tests:
+          - not_null
+      - name: zipcode
+        tests:
+          - not_null
+      - name: state
+        tests:
+          - not_null
+      - name: country
+        tests:
+          - not_null
+
+  - name: postgres_events
+    description: Addresses for our users 
+    columns:
+      - name: address_guid
+      - name: event_id
+        tests:
+          - not_null
+      - name: session_id
+      - name: user_id
+      - name: page_url 
+      - name: created_at
+      - name: event_type 
+      - name: order_id
+      - name: product_id
+  
+  - name: postgres_orders
+    description: Order details from our store
+    columns:
+      - name: order_guid
+        tests:
+          - not_null
+      - name: user_guid
+      - name: promo_id
+      - name: address_guid
+      - name: created_at
+      - name: order_cost
+      - name: shipping_cost
+      - name: order_total
+      - name: tracking_guid
+      - name: shipping_service
+      - name: estimated_delivery_at
+      - name: delivered_at
+      - name: status
+  
+  - name: postgres_order_items
+    description: Item-level details for products within orders
+    columns:
+      - name: order_guid
+        tests:
+          - not_null
+      - name: product_guid
+      - name: quantity
+  
+  - name: postgres_products
+    description: Information about our products
+    columns:
+      - name: product_guid
+        tests:
+          - not_null
+      - name: product_name
+      - name: price
+      - name: inventory
+  
+  - name: postgres_promos
+    description: Promo codes used in our store
+    columns:
+      - name: promo_id
+        tests:
+          - not_null
+      - name: discount
+      - name: status
+  
+  - name: postgres_users
+    description: Details about our users
+    columns:
+      - name: user_guid
+        tests:
+          - not_null
+      - name: first_name
+      - name: last_name
+      - name: email
+      - name: phone_number
+      - name: created_at
+      - name: updated_at
+      - name: address_guid

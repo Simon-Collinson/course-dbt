@@ -1,0 +1,11 @@
+SELECT
+EVENT_ID as EVENT_GUID
+, SESSION_ID as SESSION_GUID
+, USER_ID as USER_GUID
+, PAGE_URL 
+, CREATED_AT
+, EVENT_TYPE 
+, ORDER_ID as ORDER_GUID
+, PRODUCT_ID as PRODUCT_GUID
+
+FROM {{ source('postgres_greenery', 'events') }}

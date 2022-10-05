@@ -1,0 +1,11 @@
+SELECT
+USER_ID as USER_GUID
+, FIRST_NAME
+, LAST_NAME
+, EMAIL
+, PHONE_NUMBER
+, CREATED_AT
+, UPDATED_AT
+, ADDRESS_ID as ADDRESS_GUID
+
+FROM {{ source('postgres_greenery', 'users') }}
