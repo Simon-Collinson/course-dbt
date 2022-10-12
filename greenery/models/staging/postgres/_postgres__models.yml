@@ -21,7 +21,7 @@ models:
           - not_null
 
   - name: postgres_events
-    description: Addresses for our users 
+    description: Events emitted when our users interact with our website
     columns:
       - name: address_guid
       - name: event_id
