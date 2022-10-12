@@ -1,4 +1,4 @@
-# Answers to Week 1 Project Questions
+# Answers to Week 2 Project Questions
 
 ## Part 1. Models 
 - What is our user repeat rate?
