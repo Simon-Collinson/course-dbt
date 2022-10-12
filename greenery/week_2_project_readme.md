@@ -3,14 +3,41 @@
 ## Part 1. Models 
 - What is our user repeat rate?
 
+79.8%
+```sql
+with repeats as (
+select user_guid
+    , case when count(distinct order_guid) > 1 then 'repeat'
+    else 'no_repeat'
+    end as repeat_status
+from dev_db.dbt_simonc.postgres_orders
+group by user_guid
+)
+
+, repeat_count as (
+    select 
+    sum(case when repeat_status = 'repeat' then 1 else 0 end) as repeats
+    , sum(case when repeat_status = 'no_repeat' then 1 else 0 end) as no_repeats
+    , count(user_guid) as total
+from repeats
+    )
+    
+select repeats/total as repeat_rate from repeat_count;
+```
 
 - What are good indicators of a user who will likely purchase again? What about indicators of users who are likely NOT to purchase again? If you had more data, what features would you want to look into to answer this question?
 
+I would tackle this question by looking at some of the following features:
+- Features of events, eg number of interactions with the website, types of interaction, length of session
+- Features of first order, eg value, time to delivery, promotion usage
+- Features of user, eg location
 
 - More stakeholders are coming to us for data, which is great! But we need to get some more models created before we can help. Create a marts folder, so we can organize our models, with the following subfolders for business units:
     - Core
     - Marketing
     - Product
+
+Done!
 
 - Within each marts folder, create intermediate models and dimension/fact models.
 
