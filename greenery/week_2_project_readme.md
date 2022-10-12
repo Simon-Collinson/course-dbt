@@ -1,7 +1,7 @@
 # Answers to Week 2 Project Questions
 
 ## Part 1. Models 
-- What is our user repeat rate?
+_What is our user repeat rate?_
 
 79.8%
 ```sql
@@ -25,36 +25,44 @@ from repeats
 select repeats/total as repeat_rate from repeat_count;
 ```
 
-- What are good indicators of a user who will likely purchase again? What about indicators of users who are likely NOT to purchase again? If you had more data, what features would you want to look into to answer this question?
+_What are good indicators of a user who will likely purchase again? What about indicators of users who are likely NOT to purchase again? If you had more data, what features would you want to look into to answer this question?_
 
-I would tackle this question by looking at some of the following features:
-- Features of events, eg number of interactions with the website, types of interaction, length of session
-- Features of first order, eg value, time to delivery, promotion usage
-- Features of user, eg location
+I would tackle this question by looking at some of the following features, which might indicate likelihood to purchase again:
+- Features of events, eg number of interactions with the website (high), types of interaction (include shopping cart), length of session (long) - the inverse of these will generally indicate a user unlikely to purchase again
+- Features of the user's order, eg value (high), time to delivery (short), promotion usage (low) - the inverse of these will generally indicate a user unlikely to purchase again
+- Features of user, eg location (and other user data if I had it)
 
-- More stakeholders are coming to us for data, which is great! But we need to get some more models created before we can help. Create a marts folder, so we can organize our models, with the following subfolders for business units:
+_More stakeholders are coming to us for data, which is great! But we need to get some more models created before we can help. Create a marts folder, so we can organize our models, with the following subfolders for business units:_
     - Core
     - Marketing
     - Product
 
 Done!
 
-- Within each marts folder, create intermediate models and dimension/fact models.
+_Within each marts folder, create intermediate models and dimension/fact models._
 
-- Use the dbt docs to visualize your model DAGs to ensure the model layers make sense
+
+
+_Use the dbt docs to visualize your model DAGs to ensure the model layers make sense_
 
 ## Part 2. Tests
 
-- We added some more models and transformed some data! Now we need to make sure they’re accurately reflecting the data. Add dbt tests into your dbt project on your existing models from Week 1, and new models from the section above
+_We added some more models and transformed some data! Now we need to make sure they’re accurately reflecting the data. Add dbt tests into your dbt project on your existing models from Week 1, and new models from the section above_
 
-- What assumptions are you making about each model? (i.e. why are you adding each test?)
+_What assumptions are you making about each model? (i.e. why are you adding each test?)_
 
-- Did you find any “bad” data as you added and ran tests on your models? How did you go about either cleaning the data in the dbt model or adjusting your assumptions/tests?
-    - Apply these changes to your github repo
-- Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through.
+_Did you find any “bad” data as you added and ran tests on your models? How did you go about either cleaning the data in the dbt model or adjusting your assumptions/tests?_
+    _Apply these changes to your github repo_
+
+_Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through._
 
 ## Part 3. dbt Snapshots 
-Let's update our orders snapshot that we created last week to see how our data is changing:
+_Let's update our orders snapshot that we created last week to see how our data is changing:_
 
-1. Run the orders snapshot model using dbt snapshot and query it in snowflake to see how the data has changed since last week. (Done)
-2. Which orders changed from week 1 to week 2?
+1. _Run the orders snapshot model using dbt snapshot and query it in snowflake to see how the data has changed since last week._ (Done)
+2. _Which orders changed from week 1 to week 2?_
+
+The following orders changed status, from 'preparing' to 'shipped':
+939767ac-357a-4bec-91f8-a7b25edd46c9
+05202733-0e17-4726-97c2-0520c024ab85
+914b8929-e04a-40f8-86ee-357f2be3a2a2
