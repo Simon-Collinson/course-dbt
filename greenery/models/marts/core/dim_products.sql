@@ -21,6 +21,7 @@ select  p.product_guid
         , p.price
         , p.inventory
         , zeroifnull(po.quantity) as product_qty_lifetime --if join fails, coerce to zero units sold
+        , p.price * zeroifnull(po.quantity) as product_sales_lifetime --important note! we assume here the product's price has never changed
         , zeroifnull(pe.page_views) as product_pageviews_lifetime
         , zeroifnull(pe.adds_to_cart) as products_adds_to_cart_lifetime
 

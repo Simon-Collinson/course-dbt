@@ -23,7 +23,7 @@ select    o.order_guid
         , o.created_at
         , o.order_cost
         , o.shipping_cost
-        , p.discount as promo_discount
+        , zeroifnull(p.discount) as promo_discount
         , o.order_total
         , o.shipping_service
         , o.estimated_delivery_at

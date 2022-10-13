@@ -20,6 +20,11 @@ with users as (
     group by user_guid
 )
 
+, user_sessions as (
+    select *
+    from {{ ref('int_user_sessions') }}
+)
+
 select    u.user_guid
         , u.first_name
         , u.last_name
@@ -31,14 +36,24 @@ select    u.user_guid
         , a.country
         , a.state
         , a.zipcode
-        , o.order_count
-        , o.spend_lifetime
-        , o.units_lifetime
+        , zeroifnull(o.order_count) order_count
+        , zeroifnull(o.spend_lifetime) spend_lifetime
+        , zeroifnull(o.units_lifetime) units_lifetime
         , o.first_order_utc
         , o.latest_order_utc
+        , us.first_session
+        , us.last_session
+        , us.sessions
+        , us.total_session_duration 
+        , us.page_views
+        , us.adds_to_cart
+        , us.checkouts
+        , us.packages_shipped
 
 from users u
 left join addresses a
     on u.address_guid = a.address_guid
 left join orders o
     on u.user_guid = o.user_guid
+left join user_sessions us
+    on u.user_guid = us.user_guid

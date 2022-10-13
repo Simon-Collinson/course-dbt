@@ -54,6 +54,8 @@ _What assumptions are you making about each model? (i.e. why are you adding each
 _Did you find any “bad” data as you added and ran tests on your models? How did you go about either cleaning the data in the dbt model or adjusting your assumptions/tests?_
     _Apply these changes to your github repo_
 
+I had assumed that all users had placed orders, but this actually wasn't true, so I added some zeroifnull() operators to my user summary columns (eg lifetime units, lifetime sales) so I wouldn't end up with nulls in this column
+
 _Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through._
 
 I would set up a cron job (or use some other orchestration tool) to run `dbt test` every morning, and pipe the results to a Slack channel where the data team (and any interested business users) can monitor any test failures. If a test failed, I would then be able to share details and context directly in Slack.

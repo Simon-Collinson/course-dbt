@@ -5,7 +5,19 @@ models:
     description: Product-level summary of website events, lifetime
     columns:
       - name: product_guid
+        description: The unique identifier for the product
         tests:
           - not_null
+          - relationships:
+              to: ref('postgres_products')
+              field: product_guid
       - name: page_views
+        description: Total pageviews for this product, lifetime
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
       - name: adds_to_cart
+        description: Total adds to cart for this product, lifetime
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
