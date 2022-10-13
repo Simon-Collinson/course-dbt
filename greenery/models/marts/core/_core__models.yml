@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: dim_products
+    description: Dimensional table summarising product data (inventory, lifetime sales, price, etc.)
+    columns:
+      - name: product_guid
+        tests:
+          - not_null
+      - name: product_name
+      - name: price
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "> 0"
+      - name: inventory
+      - name: product_qty_lifetime
+      - name: product_pageviews_lifetime
+      - name: products_adds_to_cart_lifetime
+
+  - name: dim_users
+    description: Dimensional table summarising user-level data (address, orders etc)
+
+  - name: fct_orders
+    description: Fact table with order-level data (product & unit count, etc.)

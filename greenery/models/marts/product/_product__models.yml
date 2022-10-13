@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: int_product_events
+    description: Product-level summary of website events, lifetime
+    columns:
+      - name: product_guid
+        tests:
+          - not_null
+      - name: page_views
+      - name: adds_to_cart
