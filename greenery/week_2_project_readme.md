@@ -56,13 +56,12 @@ _Did you find any “bad” data as you added and ran tests on your models? How 
 
 _Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through._
 
+I would set up a cron job (or use some other orchestration tool) to run `dbt test` every morning, and pipe the results to a Slack channel where the data team (and any interested business users) can monitor any test failures. If a test failed, I would then be able to share details and context directly in Slack.
+
 ## Part 3. dbt Snapshots 
 _Let's update our orders snapshot that we created last week to see how our data is changing:_
 
 1. _Run the orders snapshot model using dbt snapshot and query it in snowflake to see how the data has changed since last week._ (Done)
 2. _Which orders changed from week 1 to week 2?_
 
-The following orders changed status, from 'preparing' to 'shipped':
-939767ac-357a-4bec-91f8-a7b25edd46c9
-05202733-0e17-4726-97c2-0520c024ab85
-914b8929-e04a-40f8-86ee-357f2be3a2a2
+The following orders changed status, from 'preparing' to 'shipped': 939767ac-357a-4bec-91f8-a7b25edd46c9, 05202733-0e17-4726-97c2-0520c024ab85, 914b8929-e04a-40f8-86ee-357f2be3a2a2
