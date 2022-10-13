@@ -41,20 +41,42 @@ Done!
 
 _Within each marts folder, create intermediate models and dimension/fact models._
 
+New models created:
+- Core
+    - int_sessions
+    - fct_orders
+- Marketing
+    - int_user_sessions
+    - dim_users
+- Product
+    - int_product_events
+    - dim_products
 
+_Explain the marts models you added. Why did you organize the models in the way you did?_
+
+I found organising the models and selecting which 'layer' they should live in surprisingly challenging - I reorganised my models several times before I was satisfied. This was partly due to dependencies (for example, the `dim_users` model in the marketing mart is dependent on the `fct_orders` model in core), but also partly due to overlapping usage. (For example, I struggled with whether `dim_users` belonged in the marketing mart or in core). Ultimately, I tried to think of use cases and target the dimensional and fact tables towards common use cases (marketing: retargeting, product: site and product analysis and optimisation).
 
 _Use the dbt docs to visualize your model DAGs to ensure the model layers make sense_
+
+![Lineage graph for Greenery dbt project at 13 Oct 2022](lineage_graph_v1.png)
+The image above visualizes the complete DAG for the Greenery project.
 
 ## Part 2. Tests
 
 _We added some more models and transformed some data! Now we need to make sure they’re accurately reflecting the data. Add dbt tests into your dbt project on your existing models from Week 1, and new models from the section above_
 
+Done!
+
 _What assumptions are you making about each model? (i.e. why are you adding each test?)_
+
+- Assuming referential integrity (ie guids are relational across tables)
+- Assuming prices are >=0 and various other common-sense rules are followed
 
 _Did you find any “bad” data as you added and ran tests on your models? How did you go about either cleaning the data in the dbt model or adjusting your assumptions/tests?_
     _Apply these changes to your github repo_
 
-I had assumed that all users had placed orders, but this actually wasn't true, so I added some zeroifnull() operators to my user summary columns (eg lifetime units, lifetime sales) so I wouldn't end up with nulls in this column
+- I had assumed that all users had placed orders, but this actually wasn't true, so I added some zeroifnull() operators to my user summary columns (eg lifetime units, lifetime sales) so I wouldn't end up with nulls in this column
+- I noticed that `package_shipped` events caused sessions to look unnaturally long, so I had to clean the data in the sessions table by excluding these events from duration calculations
 
 _Your stakeholders at Greenery want to understand the state of the data each day. Explain how you would ensure these tests are passing regularly and how you would alert stakeholders about bad data getting through._
 
