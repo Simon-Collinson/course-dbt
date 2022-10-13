@@ -39,7 +39,7 @@ models:
         description: The count of checkout screens reached during the session
       - name: packages_shipped
         description: The count of package shipped screens reached during the session
-        
+
   - name: fct_orders
     description: Fact table with order-level data (product & unit count, etc.)
     columns: 
@@ -58,8 +58,12 @@ models:
           - accepted_values:
               values: ['preparing', 'shipped', 'delivered']
       - name: address_guid
+        description: The unique guid for the address to which the order is being shipped
         tests:
           - not_null
+          - relationships:
+              to: ref('postgres_addresses')
+              field: address_guid
       - name: created_at
         description: Datetime when the order was created
         tests:
@@ -84,6 +88,7 @@ models:
                 expression: ">= 0"
             - not_null
       - name: order_total
+        description: The total monetary value of the order charged to the customer
         tests:
             - dbt_utils.expression_is_true:
                 expression: ">= 0"
