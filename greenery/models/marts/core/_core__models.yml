@@ -1,44 +1,45 @@
 version: 2
 
 models:
-  - name: dim_products
-    description: Dimensional table summarising product data (inventory, lifetime sales, price, etc.)
+  - name: int_sessions
+    description: A session-grain view of web events, with user guids and other summary data
     columns:
-      - name: product_guid
-        description: The unique identifier for the product
+      - name: session_guid
+        description: Unique identifier for this session
         tests:
           - not_null
           - unique
-      - name: product_name
-        description: The human-readable name of the product
-      - name: price
-        description: The price of the product, as advertised to the customer
+      - name: user_guid
+        description: The unique id for this session's user 
+        tests: 
+          - relationships:
+              to: ref('postgres_users')
+              field: user_guid
+      - name: session_start
+        description: The UTC datetime when the session started
+      - name: session_end
+        description: The UTC datetime when the session ended (excluding package shipped events, see below)
+      - name: session_duration
+        description: The session's duration, in seconds. Note that this excludes package shipped events, which cause sessions to look unnaturally long
+      - name: products_viewed
+        description: A comma-separated, deduplicated list of all products viewed during the session
+      - name: total_events
+        description: The total number of events during this session
         tests:
+          - not_null
           - dbt_utils.expression_is_true:
-              expression: ">= 0"
-      - name: inventory
-        description: Our current inventory for this product
-      - name: product_qty_lifetime
-        description: The total number of units of this product sold, across its lifetime
-        tests:
-            - dbt_utils.expression_is_true:
                 expression: ">= 0"
-      - name: product_sales_lifetime
-        description: The total dollar sales of this product, across its lifetime
-        tests:
-            - dbt_utils.expression_is_true:
-                expression: ">= 0"
-      - name: product_pageviews_lifetime
-        description: The total number of pageviews for this product, across its lifetime
-        tests:
-            - dbt_utils.expression_is_true:
-                expression: ">= 0"
-      - name: products_adds_to_cart_lifetime
-        description: The total number of times this product has been added to a cart, across its lifetime
-        tests:
-            - dbt_utils.expression_is_true:
-                expression: ">= 0"
-
+      - name: total_products
+        description: The count of products interacted with during this session
+      - name: page_views
+        description: The count of pageviews during the session
+      - name: adds_to_cart
+        description: The count of adds to cart during the session
+      - name: checkouts
+        description: The count of checkout screens reached during the session
+      - name: packages_shipped
+        description: The count of package shipped screens reached during the session
+        
   - name: fct_orders
     description: Fact table with order-level data (product & unit count, etc.)
     columns: 

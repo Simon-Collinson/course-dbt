@@ -6,8 +6,8 @@ with postgres_events as (
 select session_guid
     , user_guid
     , min(created_at) session_start
-    , max(created_at) session_end
-    , timediff(second, min(created_at), max(created_at)) session_duration
+    , max(case when event_type != 'package_shipped' then created_at else NULL end) session_end --package shipping is recorded as an event, leading to unusually long sessions - we exclude it for that reason
+    , timediff(second, min(created_at), max(case when event_type != 'package_shipped' then created_at else NULL end)) session_duration
     , listagg(distinct product_guid, ', ') products_viewed
     , count(*) as total_events
     , count(distinct product_guid) as total_products

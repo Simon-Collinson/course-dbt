@@ -21,3 +21,41 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: ">= 0"
+              
+  - name: dim_products
+    description: Dimensional table summarising product data (inventory, lifetime sales, price, etc.)
+    columns:
+      - name: product_guid
+        description: The unique identifier for the product
+        tests:
+          - not_null
+          - unique
+      - name: product_name
+        description: The human-readable name of the product
+      - name: price
+        description: The price of the product, as advertised to the customer
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
+      - name: inventory
+        description: Our current inventory for this product
+      - name: product_qty_lifetime
+        description: The total number of units of this product sold, across its lifetime
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: product_sales_lifetime
+        description: The total dollar sales of this product, across its lifetime
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: product_pageviews_lifetime
+        description: The total number of pageviews for this product, across its lifetime
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: products_adds_to_cart_lifetime
+        description: The total number of times this product has been added to a cart, across its lifetime
+        tests:
+            - dbt_utils.expression_is_true:
+                expression: ">= 0"

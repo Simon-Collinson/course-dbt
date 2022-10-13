@@ -1,45 +1,6 @@
 version: 2
 
 models:
-  - name: int_sessions
-    description: A session-grain view of web events, with user guids and other summary data
-    columns:
-      - name: session_guid
-        description: Unique identifier for this session
-        tests:
-          - not_null
-          - unique
-      - name: user_guid
-        description: The unique id for this session's user 
-        tests: 
-          - relationships:
-              to: ref('postgres_users')
-              field: user_guid
-      - name: session_start
-        description: The UTC datetime when the session started
-      - name: session_end
-        description: The UTC datetime when the session started
-      - name: session_duration
-        description: The session's duration, in seconds
-      - name: products_viewed
-        description: A comma-separated, deduplicated list of all products viewed during the session
-      - name: total_events
-        description: The total number of events during this session
-        tests:
-          - not_null
-          - dbt_utils.expression_is_true:
-                expression: ">= 0"
-      - name: total_products
-        description: The count of products interacted with during this session
-      - name: page_views
-        description: The count of pageviews during the session
-      - name: adds_to_cart
-        description: The count of adds to cart during the session
-      - name: checkouts
-        description: The count of checkout screens reached during the session
-      - name: packages_shipped
-        description: The count of package shipped screens reached during the session
-
   - name: int_user_sessions
     description: A user-grain view of interactions with our website, summarising a user's behaviour
     columns:
