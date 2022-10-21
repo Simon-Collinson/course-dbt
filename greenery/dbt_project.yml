@@ -34,3 +34,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   greenery:
       +materialized: view
+      marts:
+        +post-hook: 
+          - "GRANT SELECT ON {{ this }} TO ROLE reporting;"
+          
