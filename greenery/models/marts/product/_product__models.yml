@@ -1,6 +1,40 @@
 version: 2
 
 models:
+  - name: int_events_unpacked
+    description: Unpacked version of events table, with original events plus one event for each product checked out or shipped in postgres_order_items.
+    columns:
+      - name: product_guid_coalesce
+        description: The product guid for the unpacked event, either from the events or order items table. We assume that there will always be a product guid in exactly one of these columns.
+        tests:
+          - not_null
+      - name: event_guid
+        description: The guid for the event. Important note! Because this table unpacks checkout and package shipped events (1 event:many products in order), this is no longer unique
+        tests:
+          - not_null
+      - name: session_guid
+        description: The guid for the session
+        tests:
+          - not_null
+      - name: user_guid
+        description: The guid for the user interacting with the products
+        tests:
+          - not_null
+      - name: page_url
+        description: The URL of the page browsed by the user
+        tests:
+          - not_null
+      - name: created_at
+        description: The time of the unpacked event
+        tests:
+          - not_null
+      - name: event_type
+        description: The type of the unpacked event
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['checkout', 'package_shipped', 'add_to_cart', 'page_view']
+
   - name: int_product_events
     description: Product-level summary of website events, lifetime
     columns:
@@ -11,6 +45,8 @@ models:
           - relationships:
               to: ref('postgres_products')
               field: product_guid
+      - name: sessions
+        description: Total count of sessions for this product, lifetime
       - name: page_views
         description: Total pageviews for this product, lifetime
         tests:
@@ -21,6 +57,10 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: ">= 0"
+      - name: checkouts
+        description: Total count of checkouts for this product, lifetime (based on events)
+      - name: packages_shipped
+        description: Total count of packages shipped for this product, lifetime (based on events)
               
   - name: dim_products
     description: Dimensional table summarising product data (inventory, lifetime sales, price, etc.)
