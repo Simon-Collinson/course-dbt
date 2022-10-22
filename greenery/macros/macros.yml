@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: agg_event_type
+    description: SQL function to aggregate events by event type.
+    arguments:
+      - name: event_type
+        type: string
+        description: The type of event to be summarised. Valid values are ['checkout', 'package_shipped', 'add_to_cart', 'page_view']

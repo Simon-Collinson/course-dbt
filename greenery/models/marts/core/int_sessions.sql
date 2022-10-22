@@ -11,10 +11,10 @@ select session_guid
     , listagg(distinct product_guid, ', ') products_viewed
     , count(*) as total_events
     , count(distinct product_guid) as total_products
-    , agg_event_type('page_view') as page_views
-    , agg_event_type('add_to_cart') as adds_to_cart
-    , agg_event_type('checkout') as checkouts
-    , agg_event_type('package_shipped') as packages_shipped
+    , {{ agg_event_type('page_view') }} as page_views
+    , {{ agg_event_type('add_to_cart') }} as adds_to_cart
+    , {{ agg_event_type('checkout') }} as checkouts
+    , {{ agg_event_type('package_shipped') }} as packages_shipped
 
 
 from postgres_events 
