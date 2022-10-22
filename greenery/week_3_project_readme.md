@@ -70,6 +70,8 @@ We could look at a few angles to determine this: cost, shipping fees, type of pr
 
 _Create a macro to simplify part of a model(s). Think about what would improve the usability or modularity of your code by applying a macro. Large case statements, or blocks of SQL that are often repeated make great candidates. Document the macro(s) using a .yml file in the macros directory._
 
+I created a macro called 'agg_event_type' as a reusable function to aggregate session information by event type.
+
 ## Part 3: Hooks
 
 _Add a post hook to your project to apply grants to the role “reporting”._
@@ -80,14 +82,40 @@ Done!
 
 _Install a package (i.e. dbt-utils, dbt-expectations) and apply one or more of the macros to your project_
 
+I installed dbt_utils and used the `expression_is_true` test to define a `>= 0` test for numeric columns in my models. 
+
 _Show (using dbt docs and the model DAGs) how you have simplified or improved a DAG using macros and/or dbt packages._
+
+I used dbt_utils' `surrogate_key` macro to generate a surrogate key for my new `int_events_unpacked` table, which unpacks `checkout` and `package_shipped` events (normally linked to an `order_guid`) into an event for each product in that order. For example, an order which included three products would look like this in the original product table (alongside a pageview for one of the products):
+
+| EVENT_GUID | PRODUCT_GUID | ORDER_GUID |
+|------------|--------------|------------|
+| 12         | NULL         | 23         |
+| 13         | 6            | NULL       |
+
+and in the unpacked table would look like this:
+
+| SURROGATE_KEY | EVENT_GUID | PRODUCT_GUID | ORDER_GUID |
+|---------------|------------|--------------|------------|
+| 67            | 12         | 6            | 23         |
+| 78            | 12         | 7            | 23         |
+| 89            | 12         | 8            | 23         |
+| 90            | 13         | 6            | NULL       |
+
+This allowed me to create a table which included all product-related events, expanding the `int_product_events` table from just a summary of pageviews and adds to cart (not particularly useful on its own) to a summary of all events related to that product.
+
+You can see the difference between the two lineage graphs below (although admittedly the week 3 graph looks messier - I probably need to add some more intermediate models for `postgres_users` and `postgres_addresses`):
+
+![Lineage graph for Greenery dbt project at 13 Oct 2022](lineage_graph_v1.png)
+_Week 2_
+
+![Lineage graph for Greenery dbt project at 22 Oct 2022](lineage_graph_v2.png)
+_Week 3_
 
 ## Part 5: Macros
 
 _Which orders changed from week 2 to week 3?_
 
-5741e351-3124-4de7-9dff-01a448e7dfd4
-e24985f3-2fb3-456e-a1aa-aaf88f490d70
-8385cfcd-2b3f-443a-a676-9756f7eb5404
+5741e351-3124-4de7-9dff-01a448e7dfd4, e24985f3-2fb3-456e-a1aa-aaf88f490d70, 8385cfcd-2b3f-443a-a676-9756f7eb5404
 
 These orders changed status from 'preparing' to 'shipped'.

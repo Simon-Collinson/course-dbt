@@ -4,6 +4,11 @@ models:
   - name: int_events_unpacked
     description: Unpacked version of events table, with original events plus one event for each product checked out or shipped in postgres_order_items.
     columns:
+      - name: surrogate_key
+        description: A surrogate key based on product_guid and  event_guid (since a single event can be unpacked into multiple products in the case of checkout or shipping)
+        tests:
+          - not_null
+          - unique
       - name: product_guid_coalesce
         description: The product guid for the unpacked event, either from the events or order items table. We assume that there will always be a product guid in exactly one of these columns.
         tests:
