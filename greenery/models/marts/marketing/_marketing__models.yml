@@ -1,6 +1,18 @@
 version: 2
 
 models:
+  - name: fct_daily_funnel
+    description: A daily-grain table with summaries of web funnel metrics
+    columns:
+      - name: session_date
+        description: The date on which the session started, UTC
+      - name: top_funnel
+        description: The count of all sessions on this day with any activity
+      - name: mid_funnel
+        description: The count of all sessions on this day with an add to cart and/or a checkout event
+      - name: bottom_funnel
+        description: The count of all sessions on this day with a checkout event
+  
   - name: int_user_sessions
     description: A user-grain view of interactions with our website, summarising a user's behaviour
     columns:

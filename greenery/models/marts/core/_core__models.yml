@@ -114,3 +114,9 @@ models:
         tests:
           - dbt_utils.expression_is_true:
               expression: ">= 1"
+
+  - name: date_spine
+    description: Utility table with date spine for fact tables. 2021-2031 (inclusive)
+    columns:
+      - name: date_day
+        description: The day in 'date' datatype
