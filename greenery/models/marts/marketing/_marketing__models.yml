@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: fct_daily_funnel
-    description: A daily-grain table with summaries of web funnel metrics
+    description: A daily-grain table with summaries of web funnel metrics. 2021-2031 inclusive.
     columns:
       - name: session_date
         description: The date on which the session started, UTC
