@@ -38,6 +38,39 @@ _Which steps in the funnel have largest drop off points?_
 
 _Please create any additional dbt models needed to help answer these questions from our product team, and put your answers in a README in your repo._
 
+I created an additional model called `fct_daily_funnel` which contains a daily summary of funnel events. (I also created a `date_spine` utility model to provide a date spine for this and other tables).
+
+Looking at `fct_daily_funnel`, I see the following:
+
+|TOP_FUNNEL_PERC	| MID_FUNNEL_PERC |	BOTTOM_FUNNEL_PERC|
+|-------------------|-----------------|-------------------|
+| 1                	| 0.807958	      | 0.624567          |
+
+```sql
+select 
+1 as top_funnel_perc
+, sum(mid_funnel) / sum(top_funnel) as mid_funnel_perc
+, sum(bottom_funnel) / sum(top_funnel) as bottom_funnel_perc
+
+from fct_daily_funnel
+```
+
+This suggests that the drop-off from top-funnel (pageview) to mid-funnel (add to cart) is the largest, at around 20% drop-off. However, another way of looking at this is to look at the percentage not based on the original 100%, but instead based on the previous stage in the funnel. This yields the following result:
+
+|TOP_FUNNEL_PERC	| MID_FUNNEL_PERC |	BOTTOM_FUNNEL_PERC|
+|-------------------|-----------------|-------------------|
+| 1                	| 0.807958	      | 0.773019          |
+
+```sql
+select 
+1 as top_funnel_perc
+, sum(mid_funnel) / sum(top_funnel) as mid_funnel_perc
+, sum(bottom_funnel) / sum(mid_funnel) as bottom_funnel_perc --note different denominator here
+
+from fct_daily_funnel
+```
+This shows that a larger percentage of people drop out between mid-funnel (add to cart) and bottom-funnel (purchase). 
+
 _Use an exposure on your product analytics model to represent that this is being used in downstream BI tools. Please reference the course content if you have questions._
 
 ## Part 3: Reflection questions
