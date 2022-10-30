@@ -113,3 +113,7 @@ I'm interested to try Dagster for our orchestration. The cost of dbt Cloud (and 
 - Some post-run script to serve the docs
 
 I don't think I would try to parse the dbt metadata at first - any errors can be handled just by me reading the JSON output until the team gets a bit bigger.
+
+## Part 4: Optional Sigma dashboard.
+
+I have built a Sigma dashboard with some charts [here](https://app.sigmacomputing.com/corise-dbt/workbook/workbook-4ijyy6pp0yVBPSNimLCgHL).
