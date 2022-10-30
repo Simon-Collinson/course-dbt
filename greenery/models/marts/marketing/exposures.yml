@@ -1,0 +1,12 @@
+version: 2
+
+exposures:  
+  - name: Product funnel dashboard
+    description: 'Dashboard for visualizing and exploring product funnel data'
+    type: dashboard
+    maturity: medium
+    owner:
+      name: Simon Collinson
+      email: simon@greenery.com
+    depends_on:
+      - ref('fct_daily_funnel')

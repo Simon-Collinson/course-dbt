@@ -73,11 +73,19 @@ This shows that a larger percentage of people drop out between mid-funnel (add t
 
 _Use an exposure on your product analytics model to represent that this is being used in downstream BI tools. Please reference the course content if you have questions._
 
+Done, see `/models/marts/marketing/exposures.yml`
+
 ## Part 3: Reflection questions
 
 ### 3A. dbt next steps for you 
 
 _If your organization is thinking about using dbt, how would you pitch the value of dbt/analytics engineering to a decision maker at your organization?_
+
+I am planning to implement dbt at my organisation, and here are some of the arguments I've used so far:
+- dbt allows analysts to take on work which previously would have required a data engineer, eg building models and pipelines
+- dbt supports treating analytics like software, introducing change tracking, code review, testing, and better documentation
+- Instead of having to ask engineers working in production to run analytics queries, as we do at the moment, or waiting months for new dashboards to be built, dbt will empower analysts to run their queries in a safe analytics environment
+- dbt will give us much better visibiliity into our data pipelines - no more hidden and undocumented stored procedures understood by only one engineer!
 
 _If your organization is using dbt, what are 1-2 things you might do differently / recommend to your organization based on learning from this course?_
 
@@ -93,3 +101,15 @@ _And finally, before you fly free into the dbt night, we will take a step back a
 
 _Hints: what steps would you have? Which orchestration tool(s) would you be interested in using? What schedule would you run your project on? Which metadata would you be interested in using? How/why would you use the specific metadata? , etc._
 
+I'm interested to try Dagster for our orchestration. The cost of dbt Cloud (and other paid options) is not going to get past our CFO, and while I have previous experience with Airflow, Dagster seems a bit more user-friendly and modern. I can imagine deploying with the following steps:
+
+- Some pre-run scripts to bring data into the warehouse (maybe by kicking off Airbyte or Fivetran)
+- `dbt seed` in case any seed values have changed
+- `dbt snapshot` to populate my snapshot tables
+- `dbt source freshness` to try and pinpoint any freshness issues before the run happens
+- `dbt run`
+- `dbt test` to run tests and ideally output results to Slack
+- `dbt docs generate` to generate fresh docs
+- Some post-run script to serve the docs
+
+I don't think I would try to parse the dbt metadata at first - any errors can be handled just by me reading the JSON output until the team gets a bit bigger.
